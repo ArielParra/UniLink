@@ -3,7 +3,7 @@
   // Opcional: quien prefiera trabajar en su máquina puede seguir haciéndolo
   // (ver docs/00_ONBOARDING.md). Aquí todo viene ya montado.
   "name": "UniLink",
-  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-24-bookworm",
 
   "features": {
     // Necesario para `supabase start`: la CLI arranca sus propios contenedores

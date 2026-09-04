@@ -157,6 +157,30 @@ Plantilla disponible en `.gitmessage`; se activa con
 
 ---
 
+## Ramas y flujo de trabajo
+
+| Rama | Qué es |
+| --- | --- |
+| `main` | Protegida. Siempre desplegable. **No se le hace push directo**: solo recibe merges por PR con los checks `calidad` y `seguridad` en verde. Es lo que Vercel publica en producción |
+| `dev` | Rama de integración. Es la rama por defecto para trabajar y donde confluye todo antes de subir a `main` |
+| `<tipo>/<descripción>` | Ramas de trabajo, salen de `dev` y vuelven a `dev`: `feat/registro-correo`, `fix/manifest-ios` |
+
+```
+feat/mi-cambio ──▶ dev ──PR──▶ main ──▶ producción (Vercel)
+                    │            │
+                CI informa    CI es la puerta
+```
+
+El pipeline se ejecuta **en push a `dev` y a `main`, y en toda PR hacia `main`**. En `dev` sirve
+para enterarse pronto; el que decide es el de la PR, porque es el que exige la protección de
+rama.
+
+Consecuencia práctica para un agente: **el trabajo se deja en `dev` o en una rama de trabajo,
+nunca en `main`**. Y como no se commitea ni se hace push (ver reglas duras), lo normal es
+simplemente dejar el árbol de trabajo listo en la rama en la que ya está el usuario.
+
+---
+
 ## Comandos comunes
 
 ```bash

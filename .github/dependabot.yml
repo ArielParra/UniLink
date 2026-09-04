@@ -43,3 +43,8 @@ updates:
       interval: "monthly"
     commit-message:
       prefix: "build"
+    ignore:
+      # Solo versiones LTS de Node. Las impares nunca lo son, y una par no es
+      # LTS hasta octubre del año en que sale. Subir a mano tras comprobarlo.
+      - dependency-name: "node"
+        versions: [">=25"]
