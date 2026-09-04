@@ -71,9 +71,14 @@ y `.gitmessage` la tiene resumida como plantilla al escribir el commit.
 
 ## Ramas y PRs
 
-- Ramas: `<tipo>/<descripción-corta>` — `feat/registro-correo`, `fix/manifest-ios`.
+- **`main`** está protegida y no acepta push directo. **`dev`** es la rama de integración y la
+  que se usa a diario.
+- Ramas de trabajo: `<tipo>/<descripción-corta>` — `feat/registro-correo`, `fix/manifest-ios`.
+  Salen de `dev` y vuelven a `dev`.
+- Cuando `dev` está listo, se abre una PR `dev → main`. Ahí los checks `calidad` y `seguridad`
+  son obligatorios.
 - Una PR por unidad de trabajo con sentido propio; la plantilla incluye el checklist.
-- `main` protegida: los checks de CI deben pasar antes de mergear.
+- El CI corre en push a `dev` (feedback rápido) y en la PR hacia `main` (la puerta real).
 - **Los agentes de IA no commitean ni hacen push.** Es una regla dura del proyecto: dejan los
   cambios en el árbol de trabajo y la persona decide.
 

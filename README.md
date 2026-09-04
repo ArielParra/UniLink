@@ -61,6 +61,16 @@ scripts/     Utilidades del repositorio
 | [`docs/adr/`](docs/adr/) | Decisiones de arquitectura, incluidas las abiertas |
 | [`AGENTS.md`](AGENTS.md) · [`CLAUDE.md`](CLAUDE.md) | Instrucciones para los agentes de IA |
 
+## Ramas
+
+`main` está protegida y solo recibe merges por PR con el CI en verde; es lo que Vercel publica.
+Se trabaja en `dev` o en ramas que salen de ella:
+
+```bash
+git switch dev            # rama de integración
+git switch -c feat/algo   # rama de trabajo
+```
+
 ## Reglas que no se negocian
 
 - El dominio y la interfaz van en español; la mecánica genérica, en inglés. Booleanos con

@@ -8,7 +8,7 @@ trigger: always_on
 
 | Pieza | Tecnología | Notas |
 | --- | --- | --- |
-| Web | React 19 + Vite + TypeScript | SPA; código en `frontend/` |
+| Web | React 19 + Vite + TypeScript, sobre Node 24 (LTS) | SPA; código en `frontend/` |
 | Estilos | Tailwind CSS v4 | Configuración CSS-first: sin `tailwind.config.js`, los tokens viven en `frontend/src/styles/index.css` |
 | PWA | `vite-plugin-pwa` (Workbox) | Manifest y service worker generados en el build |
 | Datos y autenticación | Supabase (PostgreSQL, Auth, Storage) | Sin backend propio; el cliente habla directo con Supabase usando la `anon key` |

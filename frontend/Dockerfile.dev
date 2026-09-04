@@ -1,6 +1,8 @@
 # Entorno de desarrollo de la aplicación web.
 # Solo para desarrollo: en producción despliega Vercel a partir del build estático.
-FROM node:22-alpine
+# Node 24 (Krypton) es la LTS activa. Node 26 todavía no es LTS: no subir sin
+# comprobarlo en https://nodejs.org/en/about/previous-releases
+FROM node:24-alpine
 
 WORKDIR /app
 

@@ -1,8 +1,10 @@
 name: CI
 
 on:
+  # `dev` ejecuta el pipeline para tener feedback antes de abrir la PR;
+  # la puerta real es la protección de rama de `main`, que exige estos checks.
   push:
-    branches: ["main"]
+    branches: ["main", "dev"]
   pull_request:
     branches: ["main"]
   workflow_dispatch:
@@ -26,12 +28,12 @@ jobs:
       run:
         working-directory: ./frontend
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "npm"
           cache-dependency-path: ./frontend/package-lock.json
 
@@ -51,7 +53,7 @@ jobs:
         run: npm run build
 
       - name: Publicar informe de cobertura
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: cobertura
           path: ./frontend/coverage/lcov.info
@@ -67,13 +69,13 @@ jobs:
     needs: calidad
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           # Sonar necesita el historial completo para atribuir el código nuevo.
           fetch-depth: 0
 
       - name: Descargar informe de cobertura
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         with:
           name: cobertura
           path: ./frontend/coverage
@@ -93,7 +95,7 @@ jobs:
 
       - name: Analizar
         if: steps.token.outputs.disponible == 'true'
-        uses: SonarSource/sonarqube-scan-action@v5
+        uses: SonarSource/sonarqube-scan-action@v8
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           # Explícito: la acción sirve tanto para SonarQube Server como para
@@ -107,17 +109,17 @@ jobs:
     name: Seguridad — Secretos y Dependencias
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
       - name: Buscar secretos filtrados
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Validar Dockerfiles con Hadolint
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.5.0
         with:
           dockerfile: frontend/Dockerfile.dev
 
@@ -127,7 +129,7 @@ jobs:
           shellcheck --severity=warning --exclude=SC1091 scripts/*.sh .devcontainer/*.sh
 
       - name: Vulnerabilidades en dependencias
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@v0.36.0
         with:
           scan-type: fs
           scan-ref: .
@@ -154,7 +156,7 @@ jobs:
   #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
   #   runs-on: ubuntu-latest
   #   steps:
-  #     - uses: actions/checkout@v4
+  #     - uses: actions/checkout@v7
   #     - run: npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
   #       env:
   #         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
