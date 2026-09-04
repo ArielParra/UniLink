@@ -29,6 +29,12 @@ updates:
           - "@eslint/*"
           - "typescript-eslint"
           - "prettier"
+    ignore:
+      # typescript-eslint@8.x fija su peer dep en "typescript >=4.8.4 <6.1.0".
+      # Un salto de major en typescript rompe el árbol (ERESOLVE) hasta que
+      # typescript-eslint publique soporte. Subir a mano tras comprobarlo.
+      - dependency-name: "typescript"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
