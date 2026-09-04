@@ -1,0 +1,39 @@
+{
+  // Extensiones recomendadas para trabajar en UniLink.
+  // VSCode las ofrece al abrir el proyecto por primera vez.
+  "recommendations": [
+    // --- Errores visibles en el editor (base para que los agentes los corrijan) ---
+    "dbaeumer.vscode-eslint",
+    "usernamehw.errorlens",
+    "yoavbls.pretty-ts-errors",
+
+    // --- Formato y estilos ---
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "editorconfig.editorconfig",
+
+    // --- Calidad ---
+    "sonarsource.sonarlint-vscode",
+
+    // --- Pruebas ---
+    "vitest.explorer",
+
+    // --- Datos e infraestructura ---
+    "supabase.vscode-supabase-extension",
+    "ms-azuretools.vscode-containers",
+    "github.vscode-github-actions",
+    "redhat.vscode-yaml",
+
+    // --- Documentación (docs/ usa diagramas mermaid) ---
+    "bierner.markdown-mermaid",
+
+    // --- Paridad con los hooks de pre-commit ---
+    "timonwong.shellcheck",
+    "exiasr.hadolint",
+
+    // --- Textos de UI en español ---
+    "streetsidesoftware.code-spell-checker",
+    "streetsidesoftware.code-spell-checker-spanish"
+  ],
+  "unwantedRecommendations": []
+}

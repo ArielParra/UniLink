@@ -1,0 +1,161 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+# Cancela ejecuciones en curso de la misma rama/PR para no encolar pushes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # ─────────────────────────────────────────────
+  # 1. Calidad — lint, tipos, pruebas y build
+  # ─────────────────────────────────────────────
+  calidad:
+    name: Calidad — Lint, Tipos, Pruebas y Build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: ./frontend/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Comprobación de tipos
+        run: npm run typecheck
+
+      - name: Pruebas con cobertura
+        run: npm run test:ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Publicar informe de cobertura
+        uses: actions/upload-artifact@v4
+        with:
+          name: cobertura
+          path: ./frontend/coverage/lcov.info
+          if-no-files-found: warn
+          retention-days: 7
+
+  # ─────────────────────────────────────────────
+  # 2. SonarCloud — code smells, duplicación, cobertura
+  #    Se omite solo si el secret SONAR_TOKEN aún no está configurado.
+  # ─────────────────────────────────────────────
+  sonarcloud:
+    name: SonarCloud
+    needs: calidad
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Sonar necesita el historial completo para atribuir el código nuevo.
+          fetch-depth: 0
+
+      - name: Descargar informe de cobertura
+        uses: actions/download-artifact@v4
+        with:
+          name: cobertura
+          path: ./frontend/coverage
+        continue-on-error: true
+
+      - name: ¿Hay token configurado?
+        id: token
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          if [ -n "${SONAR_TOKEN}" ]; then
+            echo "disponible=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "disponible=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::SONAR_TOKEN no configurado; se omite el análisis de SonarCloud."
+          fi
+
+      - name: Analizar
+        if: steps.token.outputs.disponible == 'true'
+        uses: SonarSource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          # Explícito: la acción sirve tanto para SonarQube Server como para
+          # SonarQube Cloud, y sin esto la elección depende de su default.
+          SONAR_HOST_URL: https://sonarcloud.io
+
+  # ─────────────────────────────────────────────
+  # 3. Seguridad — secretos y dependencias
+  # ─────────────────────────────────────────────
+  seguridad:
+    name: Seguridad — Secretos y Dependencias
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Buscar secretos filtrados
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validar Dockerfiles con Hadolint
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: frontend/Dockerfile.dev
+
+      - name: Analizar scripts de shell
+        run: |
+          sudo apt-get update && sudo apt-get install -y shellcheck
+          shellcheck --severity=warning --exclude=SC1091 scripts/*.sh .devcontainer/*.sh
+
+      - name: Vulnerabilidades en dependencias
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          scan-type: fs
+          scan-ref: .
+          format: table
+          # De momento informativo: pasa a "1" cuando el equipo decida bloquear.
+          exit-code: "0"
+          ignore-unfixed: true
+          severity: CRITICAL,HIGH
+
+  # ─────────────────────────────────────────────
+  # 4. Despliegue
+  # ─────────────────────────────────────────────
+  # Lo hace la integración Git de Vercel: cada PR genera un preview y `main`
+  # despliega a producción. Para que la calidad sea una puerta real y no un aviso,
+  # protege `main` exigiendo los checks `calidad` y `seguridad`
+  # (Settings > Branches > Branch protection rules).
+  #
+  # Si más adelante prefieres desplegar desde CI en lugar de desde Vercel,
+  # descomenta y completa este job:
+  #
+  # deploy:
+  #   name: Desplegar en Vercel
+  #   needs: [calidad, seguridad]
+  #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - run: npx vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+  #       env:
+  #         VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  #         VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}

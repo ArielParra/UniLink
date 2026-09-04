@@ -1,0 +1,26 @@
+# Normalización de finales de línea.
+# Sin esto, un clon en Windows con core.autocrlf=true convierte todo a CRLF y
+# los scripts de shell dejan de ejecutarse dentro de los contenedores y en WSL.
+* text=auto eol=lf
+
+# Scripts: LF siempre, sin excepción.
+*.sh    text eol=lf
+*.bash  text eol=lf
+
+# Archivos que sí quieren CRLF en Windows.
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+
+# Binarios: git no debe tocarlos.
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.ico   binary
+*.woff  binary
+*.woff2 binary
+*.pdf   binary
+
+# Generados: fuera de los diffs y de las estadísticas del repositorio.
+frontend/package-lock.json      linguist-generated=true -diff
+frontend/src/lib/database.types.ts linguist-generated=true -diff

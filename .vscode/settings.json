@@ -1,0 +1,50 @@
+{
+  // --- Formato y corrección automática al guardar ---
+  // Esto es lo que hace que "arregla el lint" (a mano o desde un agente) quede aplicado.
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+
+  // --- ESLint (flat config) ---
+  "eslint.useFlatConfig": true,
+  "eslint.workingDirectories": [{ "directory": "./frontend", "changeProcessCWD": true }],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+
+  // --- TypeScript ---
+  "typescript.tsdk": "frontend/node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+
+  // --- Tailwind v4: los tokens viven en el CSS, no en un tailwind.config.js ---
+  "tailwindCSS.experimental.configFile": "frontend/src/styles/index.css",
+  "css.lint.unknownAtRules": "ignore",
+
+  // --- Errores en línea ---
+  "errorLens.enabledDiagnosticLevels": ["error", "warning"],
+
+  // --- Ortografía de los textos en español ---
+  "cSpell.language": "en,es",
+  "cSpell.words": ["UniLink", "supabase", "Vitest", "unilink", "uaa"],
+
+  // --- Ruido fuera del explorador y de las búsquedas ---
+  "files.eol": "\n",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/coverage": true,
+    "frontend/src/lib/database.types.ts": true
+  },
+
+  // --- Calidad conectada a SonarCloud ---
+  // Completa la conexión desde la extensión (SonarQube: Connect to SonarCloud)
+  // y descomenta indicando la clave del proyecto:
+  // "sonarlint.connectedMode.project": {
+  //   "connectionId": "sonarcloud",
+  //   "projectKey": ""
+  // },
+  "sonarlint.analyzerProperties": {
+    "sonar.typescript.tsconfigPath": "frontend/tsconfig.json"
+  }
+}
