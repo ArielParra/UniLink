@@ -25,12 +25,12 @@ export default function Signup({ loading, onSignup }: Readonly<SignupProps>) {
 
   return (
     <div>
-      <h1>Create an account</h1>
+      <h2 className="mb-4 text-xl font-semibold text-texto">Create an account</h2>
       <p>Sign up with your UAA student email</p>
-      <form onSubmit={handleSubmit}>
+      <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
         <label>
           Email
-          <input
+          <input className="mt-1 block w-full rounded border border-borde p-2"
             type="email"
             placeholder="al123456@edu.uaa.mx"
             value={email}
@@ -43,7 +43,7 @@ export default function Signup({ loading, onSignup }: Readonly<SignupProps>) {
 
         <label>
           Password
-          <input
+          <input className="mt-1 block w-full rounded border border-borde p-2"
             type="password"
             value={password}
             required={true}
@@ -54,7 +54,7 @@ export default function Signup({ loading, onSignup }: Readonly<SignupProps>) {
 
         <label>
           Confirm password
-          <input
+          <input className="mt-1 block w-full rounded border border-borde p-2"
             type="password"
             value={confirmPassword}
             required={true}
@@ -65,7 +65,7 @@ export default function Signup({ loading, onSignup }: Readonly<SignupProps>) {
 
         {passwordError && <p>{passwordError}</p>}
 
-        <button type="submit" disabled={loading}>
+        <button className="rounded bg-marca-600 px-4 py-2 font-medium text-white disabled:opacity-50" type="submit" disabled={loading}>
           {loading ? 'Creating account...' : 'Sign up'}
         </button>
       </form>

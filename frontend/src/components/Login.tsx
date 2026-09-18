@@ -70,22 +70,25 @@ export default function Login({
   }
 
   return (
-    <div>
-      <h1>UniLink</h1>
-      <button type="button" onClick={() => { setMode('signup') }}>
+    <main className="flex min-h-dvh items-center justify-center bg-superficie-2 p-6">
+      <div className="w-full max-w-md rounded-lg border border-borde bg-superficie p-6 shadow-sm">
+      <h1 className="mb-6 text-3xl font-bold text-marca-700">UniLink</h1>
+      <div className="mb-6 flex gap-3">
+      <button className="rounded bg-marca-600 px-4 py-2 font-medium text-white" type="button" onClick={() => { setMode('signup') }}>
         Sign up
       </button>
-      <button type="button" onClick={() => { setMode('signin') }}>
+      <button className="rounded border border-borde px-4 py-2 font-medium text-texto" type="button" onClick={() => { setMode('signin') }}>
         Sign in
       </button>
+      </div>
       {mode === 'signup' ? (
         <Signup loading={loading} onSignup={onSignup} />
       ) : (
-        <form onSubmit={handleSignin}>
-          <h2>Sign in</h2>
+        <form className="space-y-4" onSubmit={handleSignin}>
+          <h2 className="text-xl font-semibold text-texto">Sign in</h2>
           <label>
             Email
-            <input
+            <input className="mt-1 block w-full rounded border border-borde p-2" 
               type="email"
               placeholder="al123456@edu.uaa.mx"
               value={email}
@@ -97,18 +100,19 @@ export default function Login({
           </label>
           <label>
             Password
-            <input
+            <input className="mt-1 block w-full rounded border border-borde p-2"
               type="password"
               value={password}
               required={true}
               onChange={(event) => { setPassword(event.target.value) }}
             />
           </label>
-          <button type="submit" disabled={loading}>
+          <button className="rounded bg-marca-600 px-4 py-2 font-medium text-white disabled:opacity-50" type="submit" disabled={loading}>
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
       )}
-    </div>
+      </div>
+    </main>
   )
 }
