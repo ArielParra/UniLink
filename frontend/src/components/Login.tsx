@@ -1,8 +1,8 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SyntheticEvent } from 'react'
 import Home from './Home'
 import Signup from './Signup'
 
-type LoginProps = {
+interface LoginProps {
   claims: { email?: string } | null
   verifying: boolean
   authError: string | null
@@ -24,12 +24,12 @@ export default function Login({
   onSignin,
   onLogout,
   onClearError,
-}: LoginProps) {
+}: Readonly<LoginProps>) {
   const [mode, setMode] = useState<'signup' | 'signin'>('signup')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSignin = (event: FormEvent<HTMLFormElement>) => {
+  const handleSignin = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
     onSignin(email, password)
   }
@@ -72,10 +72,10 @@ export default function Login({
   return (
     <div>
       <h1>UniLink</h1>
-      <button type="button" onClick={() => setMode('signup')}>
+      <button type="button" onClick={() => { setMode('signup') }}>
         Sign up
       </button>
-      <button type="button" onClick={() => setMode('signin')}>
+      <button type="button" onClick={() => { setMode('signin') }}>
         Sign in
       </button>
       {mode === 'signup' ? (
@@ -92,7 +92,7 @@ export default function Login({
               required={true}
               pattern="al[0-9]{6}@edu[.]uaa[.]mx"
               title="Use your student email: alXXXXXX@edu.uaa.mx"
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => { setEmail(event.target.value) }}
             />
           </label>
           <label>
@@ -101,7 +101,7 @@ export default function Login({
               type="password"
               value={password}
               required={true}
-              onChange={(event) => setPassword(event.target.value)}
+              onChange={(event) => { setPassword(event.target.value) }}
             />
           </label>
           <button type="submit" disabled={loading}>

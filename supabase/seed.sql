@@ -1,5 +1,0 @@
--- Datos de siembra para el entorno local.
--- Se ejecuta al final de `supabase db reset`.
---
--- Solo datos de desarrollo: nunca datos de personas reales ni credenciales.
--- Vacío por ahora — el esquema todavía no existe.

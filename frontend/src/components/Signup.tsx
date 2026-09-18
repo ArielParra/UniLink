@@ -1,17 +1,17 @@
-import { useState, type FormEvent } from 'react'
+import { useState, type SyntheticEvent } from 'react'
 
-type SignupProps = {
+interface SignupProps {
   loading: boolean
   onSignup: (email: string, password: string) => void
 }
 
-export default function Signup({ loading, onSignup }: SignupProps) {
+export default function Signup({ loading, onSignup }: Readonly<SignupProps>) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (password !== confirmPassword) {
@@ -37,7 +37,7 @@ export default function Signup({ loading, onSignup }: SignupProps) {
             required={true}
             pattern="al[0-9]{6}@edu[.]uaa[.]mx"
             title="Use your student email: alXXXXXX@edu.uaa.mx"
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => { setEmail(event.target.value) }}
           />
         </label>
 
@@ -48,7 +48,7 @@ export default function Signup({ loading, onSignup }: SignupProps) {
             value={password}
             required={true}
             minLength={6}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(event) => { setPassword(event.target.value) }}
           />
         </label>
 
@@ -59,7 +59,7 @@ export default function Signup({ loading, onSignup }: SignupProps) {
             value={confirmPassword}
             required={true}
             minLength={6}
-            onChange={(event) => setConfirmPassword(event.target.value)}
+            onChange={(event) => { setConfirmPassword(event.target.value) }}
           />
         </label>
 

@@ -1,9 +1,9 @@
-type HomeProps = {
-  email?: string
+interface HomeProps {
+  email?: string | undefined
   onLogout: () => void
 }
 
-export default function Home({ email, onLogout }: HomeProps) {
+export default function Home({ email, onLogout }: Readonly<HomeProps>) {
   return (
     <div>
       <h1>Welcome!</h1>
