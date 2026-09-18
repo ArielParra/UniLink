@@ -77,7 +77,7 @@ export default function Login({
       <button className="rounded bg-marca-600 px-4 py-2 font-medium text-white" type="button" onClick={() => { setMode('signup') }}>
         Sign up
       </button>
-      <button className="rounded border border-borde px-4 py-2 font-medium text-texto" type="button" onClick={() => { setMode('signin') }}>
+     <button className="rounded bg-marca-600 px-4 py-2 font-medium text-white" type="button" onClick={() => { setMode('signin') }}>
         Sign in
       </button>
       </div>
