@@ -1,23 +1,130 @@
-/**
- * Cascarón de la aplicación.
- *
- * Placeholder deliberado: existe para que Vite tenga un punto de entrada real y
- * el checklist de verificación pueda ejecutarse. Se sustituye por el enrutado y
- * las pantallas en la sesión de implementación.
- */
+import { useState, useEffect } from 'react'
+import { createClient } from '@supabase/supabase-js'
+import Login from '../components/Login'
+
+interface AuthClaims {
+  email?: string
+}
+
+const supabaseUrl = String(import.meta.env.VITE_SUPABASE_URL)
+const supabasePublishableKey = String(import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY)
+
+const supabase = createClient(
+  supabaseUrl,
+  supabasePublishableKey,
+)
+
 export function App() {
+  const [loading, setLoading] = useState(false)
+  const [claims, setClaims] = useState<AuthClaims | null>(null)
+
+  // Check URL params on initial render
+  const params = new URLSearchParams(window.location.search)
+  const hasTokenHash = params.get('token_hash')
+
+  const [verifying, setVerifying] = useState(!!hasTokenHash)
+  const [authError, setAuthError] = useState<string | null>(null)
+  const [authSuccess, setAuthSuccess] = useState(false)
+
+  useEffect(() => {
+    // Check if we have token_hash in URL (magic link callback)
+    const params = new URLSearchParams(window.location.search)
+    const token_hash = params.get('token_hash')
+
+    if (token_hash) {
+      // Verify the OTP token
+      void supabase.auth
+        .verifyOtp({
+          token_hash,
+          type: 'signup',
+        })
+        .then(({ error }) => {
+          if (error) {
+            setAuthError(error.message)
+          } else {
+            setAuthSuccess(true)
+            // Clear URL params
+            window.history.replaceState({}, document.title, '/')
+          }
+          setVerifying(false)
+        })
+    }
+
+    // Check for existing session using getClaims
+    void supabase.auth.getClaims().then(({ data }) => {
+      setClaims(data?.claims ?? null)
+    })
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(() => {
+      void supabase.auth.getClaims().then(({ data }) => {
+        setClaims(data?.claims ?? null)
+      })
+    })
+
+    return () => {
+      subscription.unsubscribe()
+    }
+  }, [])
+
+  const handleSignup = async (email: string, password: string) => {
+    setLoading(true)
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: window.location.origin,
+      },
+    })
+    if (error) {
+      alert(error.message)
+    } else if (!data.session) {
+      alert('Account created. Check your email to confirm your account!')
+    } else {
+      alert('Account created successfully!')
+    }
+    setLoading(false)
+  }
+
+  const handleSignin = async (email: string, password: string) => {
+    setLoading(true)
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+    if (error) {
+      alert(error.message)
+    }
+    setLoading(false)
+  }
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setClaims(null)
+  }
+
   return (
-    <main className="mx-auto flex min-h-dvh max-w-2xl flex-col justify-center gap-5 px-6 py-12">
-      <h1 className="text-marca-700 text-4xl font-bold tracking-tight">UniLink</h1>
-
-      <p className="text-texto-suave text-lg">
-        Conecta con estudiantes de tu universidad a partir de intereses en común.
-      </p>
-
-      <p className="border-borde bg-superficie-2 text-texto-suave rounded-lg border p-4 text-sm">
-        Esqueleto del proyecto: todavía no hay funcionalidad. Las convenciones y el punto de
-        partida están en <code className="font-mono">docs/00_ONBOARDING.md</code>.
-      </p>
-    </main>
-  );
+    <Login
+      claims={claims}
+      verifying={verifying}
+      authError={authError}
+      authSuccess={authSuccess}
+      loading={loading}
+      onSignup={(email, password) => {
+        void handleSignup(email, password)
+      }}
+      onSignin={(email, password) => {
+        void handleSignin(email, password)
+      }}
+      onLogout={() => {
+        void handleLogout()
+      }}
+      onClearError={() => {
+        setAuthError(null)
+        window.history.replaceState({}, document.title, '/')
+      }}
+    />
+  )
 }

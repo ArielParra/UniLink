@@ -9,14 +9,14 @@ categoría y descubrimiento de personas afines.
 
 ## Stack
 
-| Pieza | Tecnología |
-| --- | --- |
-| Web | React + Vite + TypeScript, Tailwind CSS v4 |
-| PWA | `vite-plugin-pwa` (Workbox) |
-| Datos y autenticación | Supabase (PostgreSQL + Auth + Storage) |
-| Despliegue | Vercel |
-| Desarrollo | Docker Compose + Supabase CLI |
-| Calidad | ESLint, Prettier, SonarCloud, pre-commit, GitHub Actions |
+| Pieza                 | Tecnología                                               |
+| --------------------- | -------------------------------------------------------- |
+| Web                   | React + Vite + TypeScript, Tailwind CSS v4               |
+| PWA                   | `vite-plugin-pwa` (Workbox)                              |
+| Datos y autenticación | Supabase (PostgreSQL + Auth + Storage)                   |
+| Despliegue            | Vercel                                                   |
+| Desarrollo            | Docker Compose + Supabase CLI                            |
+| Calidad               | ESLint, Prettier, SonarCloud, pre-commit, GitHub Actions |
 
 ## Arranque rápido
 
@@ -50,16 +50,16 @@ scripts/     Utilidades del repositorio
 
 ## Documentación
 
-| Documento | Contenido |
-| --- | --- |
-| [`docs/00_ONBOARDING.md`](docs/00_ONBOARDING.md) | Puesta a punto del entorno y de las herramientas de IA |
-| [`docs/01_ARQUITECTURA.md`](docs/01_ARQUITECTURA.md) | Cómo encajan las piezas y por qué la RLS es crítica |
-| [`docs/02_CONVENCIONES.md`](docs/02_CONVENCIONES.md) | Idioma, nombres, commits, código |
-| [`docs/03_CALIDAD_CI.md`](docs/03_CALIDAD_CI.md) | Lint, pre-commit, SonarCloud, pipeline |
-| [`docs/04_PWA.md`](docs/04_PWA.md) | Manifest, service worker e instalación por plataforma |
-| [`docs/05_HERENCIA_SIGI.md`](docs/05_HERENCIA_SIGI.md) | Qué prácticas vienen de SIGI, qué se adaptó y por qué |
-| [`docs/adr/`](docs/adr/) | Decisiones de arquitectura, incluidas las abiertas |
-| [`AGENTS.md`](AGENTS.md) · [`CLAUDE.md`](CLAUDE.md) | Instrucciones para los agentes de IA |
+| Documento                                              | Contenido                                              |
+| ------------------------------------------------------ | ------------------------------------------------------ |
+| [`docs/00_ONBOARDING.md`](docs/00_ONBOARDING.md)       | Puesta a punto del entorno y de las herramientas de IA |
+| [`docs/01_ARQUITECTURA.md`](docs/01_ARQUITECTURA.md)   | Cómo encajan las piezas y por qué la RLS es crítica    |
+| [`docs/02_CONVENCIONES.md`](docs/02_CONVENCIONES.md)   | Idioma, nombres, commits, código                       |
+| [`docs/03_CALIDAD_CI.md`](docs/03_CALIDAD_CI.md)       | Lint, pre-commit, SonarCloud, pipeline                 |
+| [`docs/04_PWA.md`](docs/04_PWA.md)                     | Manifest, service worker e instalación por plataforma  |
+| [`docs/05_HERENCIA_SIGI.md`](docs/05_HERENCIA_SIGI.md) | Qué prácticas vienen de SIGI, qué se adaptó y por qué  |
+| [`docs/adr/`](docs/adr/)                               | Decisiones de arquitectura, incluidas las abiertas     |
+| [`AGENTS.md`](AGENTS.md) · [`CLAUDE.md`](CLAUDE.md)    | Instrucciones para los agentes de IA                   |
 
 ## Ramas
 
