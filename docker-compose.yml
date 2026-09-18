@@ -1,0 +1,33 @@
+# Entorno de desarrollo de UniLink.
+#
+# Aquí vive SOLO la aplicación web. El stack de Supabase (PostgreSQL, Auth,
+# Storage, Studio) lo levanta su propio CLI con `supabase start`: replicarlo a
+# mano en este archivo produce un entorno que se desincroniza del real en cuanto
+# Supabase cambia una versión. Ver docs/03_CALIDAD_CI.md.
+#
+# Uso:
+#   docker compose up          # web en http://localhost:5173
+#   docker compose down
+
+services:
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: unilink_web
+    ports:
+      - "${WEB_PORT:-5173}:5173"
+    volumes:
+      # El código se monta para tener recarga en caliente.
+      # El sufijo `:z` reetiqueta el directorio para SELinux (Fedora, RHEL): sin
+      # él, el contenedor recibe "permission denied" al leer el código. Docker
+      # Desktop en macOS y Windows lo ignora, y en Ubuntu (AppArmor) es inocuo.
+      - ./frontend:/app:z
+      # node_modules vive dentro del contenedor, no en el host.
+      - /app/node_modules
+    env_file:
+      - ./frontend/.env
+    environment:
+      # Necesario para que la recarga en caliente funcione a través del bind mount.
+      - CHOKIDAR_USEPOLLING=true
+    restart: unless-stopped

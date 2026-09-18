@@ -1,0 +1,14 @@
+node_modules
+**/node_modules
+frontend/dist
+dist
+.git
+.github
+.env
+.env.*
+!.env.example
+coverage
+.vercel
+supabase/.temp
+supabase/.branches
+docs

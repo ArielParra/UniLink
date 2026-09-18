@@ -1,0 +1,18 @@
+# Entorno de desarrollo de la aplicación web.
+# Solo para desarrollo: en producción despliega Vercel a partir del build estático.
+# Node 24 (Krypton) es la LTS activa. Node 26 todavía no es LTS: no subir sin
+# comprobarlo en https://nodejs.org/en/about/previous-releases
+FROM node:24-alpine
+
+WORKDIR /app
+
+# Las dependencias se instalan en una capa aparte para aprovechar la caché.
+COPY package.json package-lock.json* ./
+RUN npm ci || npm install
+
+COPY . .
+
+EXPOSE 5173
+
+# --host expone el servidor fuera del contenedor.
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]

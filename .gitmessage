@@ -1,0 +1,31 @@
+# <tipo>(<alcance>): <verbo en infinitivo> <qué cambia>          ≤ 72 caracteres
+#
+# Cuerpo: POR QUÉ el cambio, no qué líneas se tocaron. Envuelve a 72 columnas.
+# Si toca varias áreas, una viñeta por área:
+#   - Cliente: ...
+#   - Base de datos: ...
+#   - Pruebas: ...
+#
+# Cierra #123
+#
+# ── Tipos ────────────────────────────────────────────────────────────────────
+# feat      funcionalidad nueva          test      pruebas
+# fix       corrección de un fallo       build     dependencias, Docker, Vite
+# docs      solo documentación           ci        workflows, hooks, Sonar
+# style     formato, sin cambio de       chore     tareas de mantenimiento
+#           comportamiento               revert    revierte un commit anterior
+# refactor  reestructurar sin cambiar
+#           comportamiento
+# perf      rendimiento
+#
+# ── Alcances ─────────────────────────────────────────────────────────────────
+# auth · perfil · gustos · descubrir · pwa · ui · db · ci · docs · deps · agents
+#
+# ── Reglas ───────────────────────────────────────────────────────────────────
+# · Verbo en INFINITIVO: "agregar", no "agrega" ni "agregado".
+# · Minúscula tras los dos puntos, sin punto final.
+# · Un cambio lógico por commit.
+# · Rompe compatibilidad: feat(db)!: ...  o  BREAKING CHANGE: ... en el cuerpo.
+# · Sin trailers de atribución de IA (Co-Authored-By, Claude-Session).
+#
+# El hook commit-msg rechaza cualquier otro formato.

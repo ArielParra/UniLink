@@ -1,0 +1,41 @@
+# Configuración del proyecto de Supabase.
+# Plantilla inicial: ejecuta `supabase init` para que el CLI la complete y la
+# actualice a la versión que corresponda a tu instalación.
+#
+# Este archivo se versiona. NO contiene secretos.
+
+project_id = "unilink"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+major_version = 17
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+enabled = true
+# URL a la que vuelve el usuario tras confirmar su correo.
+site_url = "http://localhost:5173"
+additional_redirect_urls = ["http://localhost:5173"]
+jwt_expiry = 3600
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+# La verificación del correo institucional es el núcleo del registro:
+# ver docs/adr/001-verificacion-correo-institucional.md (decisión abierta).
+enable_confirmations = true
+
+[inbucket]
+# Buzón local para leer los correos de verificación durante el desarrollo.
+enabled = true
+port = 54324

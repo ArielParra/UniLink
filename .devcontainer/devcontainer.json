@@ -1,0 +1,58 @@
+{
+  // Entorno de desarrollo reproducible para UniLink.
+  // Opcional: quien prefiera trabajar en su máquina puede seguir haciéndolo
+  // (ver docs/00_ONBOARDING.md). Aquí todo viene ya montado.
+  "name": "UniLink",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:1-24-bookworm",
+
+  "features": {
+    // Necesario para `supabase start`: la CLI arranca sus propios contenedores
+    // y para eso necesita hablar con el demonio Docker del anfitrión.
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": true
+    },
+    // pre-commit y scripts/sync-skills.sh requieren Python.
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "3.12",
+      "installTools": false
+    },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "forwardPorts": [5173, 54321, 54322, 54323, 54324],
+  "portsAttributes": {
+    "5173": { "label": "UniLink (Vite)", "onAutoForward": "notify" },
+    "54321": { "label": "Supabase API" },
+    "54322": { "label": "Supabase PostgreSQL" },
+    "54323": { "label": "Supabase Studio" },
+    "54324": { "label": "Inbucket (correos de prueba)" }
+  },
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "usernamehw.errorlens",
+        "yoavbls.pretty-ts-errors",
+        "esbenp.prettier-vscode",
+        "bradlc.vscode-tailwindcss",
+        "editorconfig.editorconfig",
+        "sonarsource.sonarlint-vscode",
+        "vitest.explorer",
+        "supabase.vscode-supabase-extension",
+        "ms-azuretools.vscode-containers",
+        "github.vscode-github-actions",
+        "redhat.vscode-yaml",
+        "bierner.markdown-mermaid",
+        "timonwong.shellcheck",
+        "exiasr.hadolint",
+        "streetsidesoftware.code-spell-checker",
+        "streetsidesoftware.code-spell-checker-spanish"
+      ]
+    }
+  },
+
+  "remoteUser": "node"
+}

@@ -1,0 +1,48 @@
+/* ============================================================================
+ * UniLink — hoja de estilos global
+ * ----------------------------------------------------------------------------
+ * Tailwind CSS v4 se configura desde CSS: no hay tailwind.config.js.
+ * Este archivo es el ÚNICO lugar donde se declaran los tokens del tema; el
+ * resto del estilo se escribe con clases de utilidad en los componentes.
+ * ========================================================================== */
+
+@import 'tailwindcss';
+
+@theme {
+  /* Marca — provisional, a ajustar cuando exista identidad visual */
+  --color-marca-50: #eff6ff;
+  --color-marca-500: #3b82f6;
+  --color-marca-600: #2563eb;
+  --color-marca-700: #1d4ed8;
+
+  /* Superficies y texto */
+  --color-superficie: #ffffff;
+  --color-superficie-2: #f8fafc;
+  --color-borde: #e2e8f0;
+  --color-texto: #0f172a;
+  --color-texto-suave: #475569;
+
+  /* Estados */
+  --color-exito: #16a34a;
+  --color-error: #dc2626;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-superficie);
+    color: var(--color-texto);
+    /* Respeta el área segura en pantallas con notch cuando corre instalada. */
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+  }
+
+  /* El foco visible no se elimina: es un requisito de accesibilidad. */
+  :focus-visible {
+    outline: 2px solid var(--color-marca-600);
+    outline-offset: 2px;
+  }
+}

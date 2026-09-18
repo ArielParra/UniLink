@@ -1,5 +1,55 @@
+# Dependencias
+node_modules/
+.pnp/
+.pnp.js
+
+# Build
+frontend/dist/
+dist/
+*.tsbuildinfo
+
+# Entorno — nunca commitear secretos
+.env
+.env.*
+!.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Pruebas y cobertura
+coverage/
+.vitest/
+
+# Despliegue
+.vercel/
+
+# Supabase (stack local)
+supabase/.branches/
+supabase/.temp/
+supabase/.env
+
+# Editores
+.idea/
+.history/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Agentes de IA — ni los cuerpos de las skills ni los enlaces que crea
+# `npx skills` se versionan: cada persona elige qué agentes instala y con qué
+# método (enlace simbólico o copia). Lo único versionado es skills-lock.json.
+# Restaurar en un clon nuevo: bash scripts/sync-skills.sh
+.agents/skills/
+.claude/skills/
+.opencode/skills
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
+
+# Análisis
+.scannerwork/
+
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,16 +57,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Vite and local build output
+dist-ssr/
 *.local
 
-# Editor directories and files
+# Vite template editor files
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
