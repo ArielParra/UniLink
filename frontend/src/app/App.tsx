@@ -140,6 +140,7 @@ export function App() {
         profile_id: userData.user.id,
         name: g.nombre,
         category: g.categoriaId,
+        genres: g.generos,
         external_id: g.idExterno,
         image_url: g.imagenUrl ?? null,
       }));

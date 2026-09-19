@@ -12,6 +12,7 @@ export interface InteresCatalogo {
   id: string;
   nombre: string;
   categoria: CategoriaInteres;
+  generos: string[];
   imagenUrl: string | null;
   externalId: string;
 }
@@ -39,6 +40,18 @@ const getImageUrl = (item: Record<string, unknown>): string | null =>
 
 const getName = (item: Record<string, unknown>): string | null =>
   getString(item.title) ?? getString(item.name) ?? getString(item.artist) ?? getString(item.label);
+
+const getGenres = (item: Record<string, unknown>): string[] => {
+  const rawGenres = item.genres ?? item.genre ?? item.tags ?? item.themes ?? item.categories;
+  if (!Array.isArray(rawGenres)) return [];
+
+  return rawGenres.flatMap((rawGenre): string[] => {
+    if (typeof rawGenre === 'string' && rawGenre.trim()) return [rawGenre.trim()];
+    if (!isRecord(rawGenre)) return [];
+    const name = getString(rawGenre.name) ?? getString(rawGenre.label) ?? getString(rawGenre.title);
+    return name ? [name.trim()] : [];
+  });
+};
 
 const parseIntereses = (
   response: FuncionInteresResponse,
@@ -70,6 +83,7 @@ const parseIntereses = (
         externalId,
         nombre,
         categoria,
+        generos: getGenres(rawItem),
         imagenUrl: getImageUrl(rawItem),
       },
     ];

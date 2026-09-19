@@ -50,5 +50,6 @@ export interface GustoItem {
   categoriaId: CategoriaGustoDef['id'];
   nombre: string;
   idExterno: string;
+  generos: string[];
   imagenUrl?: string;
 }

@@ -99,6 +99,7 @@ export default function Signup({ loading, onSignup }: Readonly<SignupProps>) {
         categoriaId: categoriaActiva,
         nombre: nombreLimpio,
         idExterno: interes.externalId,
+        generos: interes.generos,
         ...(interes.imagenUrl ? { imagenUrl: interes.imagenUrl } : {}),
       },
     ]);
